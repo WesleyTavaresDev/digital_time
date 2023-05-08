@@ -1,4 +1,5 @@
 use chrono::prelude::*;
+use gtk::glib;
 use gtk::prelude::*;
 use gtk::{Application, ApplicationWindow};
 
@@ -17,9 +18,15 @@ fn setup(application: &Application) {
         .default_height(180)
         .build();
 
-    window.add(&gtk::Label::new(Some(&get_time())));
+    let time_label = gtk::Label::new(Some(&get_time()));
+    window.add(&time_label);
 
     window.show_all();
+
+    glib::timeout_add_seconds_local(1, move || {
+        time_label.set_text(&get_time());
+        glib::Continue(true)
+    });
 }
 
 fn get_time() -> String {
