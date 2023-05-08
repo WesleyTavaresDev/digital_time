@@ -13,9 +13,20 @@ fn setup(application: &Application) {
     let window = ApplicationWindow::builder()
         .application(application)
         .title("time")
-        .default_width(180)
-        .default_height(240)
+        .default_width(240)
+        .default_height(180)
         .build();
 
-    window.present();
+    window.add(&gtk::Label::new(Some(&get_time())));
+
+    window.show_all();
+}
+
+fn get_time() -> String {
+    return format!(
+        "{}:{}:{}",
+        Local::now().hour(),
+        Local::now().minute(),
+        Local::now().second()
+    );
 }
